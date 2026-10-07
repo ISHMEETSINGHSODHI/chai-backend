@@ -11,7 +11,7 @@
   "type": "module",
   "main": "src/index.js",
 "scripts": {
-  "dev": "node --watch src/index.js"
+  "dev": "node -r dotenv/config --experimental-json-modules  src/index.js"
 },
   "devDependencies": {
     "prettier": "^3.9.9"
