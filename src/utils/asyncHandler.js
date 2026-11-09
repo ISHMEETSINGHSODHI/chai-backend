@@ -1,13 +1,13 @@
-const asyncHandeler =  (requestHandeler)=>{
-    (req,res,next) =>{
-        Promise.resolve(requestHandeler(req,res,next)).catch((err) => next(err))
+const asyncHandler =  (requestHandler)=>{
+    return(req,res,next) =>{
+        Promise.resolve(requestHandler(req,res,next)).catch((err) => next(err))
     }
 }
 //just an method bana kar  export the 
 
 
 
-export {asyncHandeler}
+export  default asyncHandler
 
 
 // const asyncHandeler = (fn) => { () => {}}
