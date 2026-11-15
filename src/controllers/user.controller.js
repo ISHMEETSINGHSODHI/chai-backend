@@ -22,6 +22,9 @@ const registerUser = asyncHandler( async (req , res ) => {
 // remove password and the refresh token  field fron the response like we dont want the user to get the password that is encrypted to the user again and again 
 // check for the user creation  
 // return the response to the user 
+  const {username,email,fullname,password}= req.body 
+ console.log ("email", email);
+
 })
  
 
