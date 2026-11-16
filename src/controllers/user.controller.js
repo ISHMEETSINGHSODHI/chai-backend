@@ -1,4 +1,8 @@
-import asyncHandler from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import {asyncHandler} from "../utils/asyncHandler.js";
+import {User} from "../models/users.model.js";
+import {uploadOnCloudinary } from "../utils/cloudinary.js";
+import {ApiREsponse} from "../utils/ApiREsponse.js"; 
 
 
 
@@ -24,8 +28,54 @@ const registerUser = asyncHandler( async (req , res ) => {
 // return the response to the user 
   const {username,email,fullname,password}= req.body 
  console.log ("email", email);
+//  if (fullname === "") {
+//   throw new ApiError(400,"full name is required")
+//  }
 
-})
- 
+ if (
+  [fullname,email,password,username].some((field) => field?.trim() === "") ) 
+  {
+    throw new ApiError(400 , "all fields are must MF ") // my friend 
+  }
+ const existedUser = User.findOne ({
+  $or: [{username},{email}]
+ }) 
 
+   if (existedUser){
+    throw new ApiError(409,"user wu=ith email or username already exist ")
+  } 
+
+   const avatarLocalPath = req.files?.avatar[0]?.path;
+  const coverImageLocalPath =  req.files?.coverImage[0]?.path;
+
+  if (!avatarLocalPath) {
+    throw new ApiError(400,"Avatar Image is Required ");
+  }
+ const avater  =  await uploadOnCloudinary (avatarLocalPath);
+ const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+ if(!avatar){
+  throw new ApiError (400,"Avatar image is not present ")
+ }
+
+  const user = await User.create({
+     fullname,
+     avatar:avatar.url,
+     coverImage : coverImage?.url || "",
+     email,
+     password ,
+     username : username.toLowerCase()
+ })
+   
+ const createdUser = await User.findByID(user._id).select(
+  "-passowrd -refreshTokens"
+ )
+ if (!createdUser) {
+  throe new ApiError(500,"Some tthing went wrong wile registring the user ")
+ }
+     
+   return res.status(201).json(
+    new  ApiREsponse(200,createdUser , "User is created Sucessfully  ")
+   )
+}) 
 export {registerUser}
