@@ -1,9 +1,8 @@
-import mongoose, {schema, SchemaType} from "mongoose";
+import mongoose, {Schema, SchemaType} from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { use } from "react";
 
-const userschema = new schema (
+const userschema = new Schema (
     
     { username: {
 
@@ -41,7 +40,7 @@ const userschema = new schema (
 
     },
     whatchHistory:[ {
-        type : Schema.Type.ObjectID,
+        type : Schema.Types.ObjectId,
         ref:"Video"
     }],
     password: {
@@ -99,4 +98,4 @@ userschema.methods.generateRefreshTokens = function (){
 
 userschema.methods.generateRefreshTokens = function(){}
 
-export const  User =mongoose.model("User",userschema)
+export const  User =mongoose.model("User",userschema);

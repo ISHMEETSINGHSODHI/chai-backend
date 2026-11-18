@@ -54,13 +54,13 @@ const registerUser = asyncHandler( async (req , res ) => {
  const avater  =  await uploadOnCloudinary (avatarLocalPath);
  const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
- if(!avatar){
+ if(!avater){
   throw new ApiError (400,"Avatar image is not present ")
  }
 
   const user = await User.create({
      fullname,
-     avatar:avatar.url,
+     avatar:avater.url,
      coverImage : coverImage?.url || "",
      email,
      password ,
@@ -71,7 +71,7 @@ const registerUser = asyncHandler( async (req , res ) => {
   "-passowrd -refreshTokens"
  )
  if (!createdUser) {
-  throe new ApiError(500,"Some tthing went wrong wile registring the user ")
+  throw new ApiError(500,"Some tthing went wrong wile registring the user ")
  }
      
    return res.status(201).json(
