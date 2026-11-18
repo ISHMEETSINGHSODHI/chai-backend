@@ -74,8 +74,8 @@ if (!avatarLocalPath) {
   throw new ApiError(500,"Some tthing went wrong wile registring the user ")
  }
      
-   return res.status(201).json(
-    new  ApiREsponse(200,createdUser , "User is created Sucessfully  ")
-   )
+return res
+  .status(201)
+  .json(new ApiREsponse(200, createdUser, "User registered successfully"));
 }) 
 export {registerUser}
