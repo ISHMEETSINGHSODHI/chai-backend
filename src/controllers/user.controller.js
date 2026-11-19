@@ -5,7 +5,18 @@ import {uploadOnCloudinary } from "../utils/cloudinary.js";
 import {ApiREsponse} from "../utils/ApiREsponse.js"; 
 
 
-
+const  generateAccessandRefreshTokens = async(userId) => {
+  try {
+    const user = await User.findById(userId)
+    const refreshToken = generateRefreshTokens()
+    const accessToken = generateAccessTokens() // there are the mehods that we are makin an call to thanks 
+  
+  
+  } catch (error) {
+    throw new ApiError (500, "Something went wrong while generating the refresh and refresh token ")
+    
+  }
+} 
 // const registerUser = asyncHandler( async (req , res ) => {
 //     res.status(200).json({
 //         message:"OK"
@@ -88,7 +99,31 @@ const loginUser = asyncHandler(async (req,res) => { } )
 //  send the  new session token including the sucessful message and rever the user the services and initia ted the other 
 // functions to the user and and  that's it thanks that's it. 
 
+//  sir thinking skills 
+// req body 
+// email / username 
+//password check 
+// access and refresh tokens 
+//  now send the secure cookies to the user 
 
+const {email,username,password} = req.body 
 
+if (!username||!email) {
+  throw new ApiError(400, "For Login Username or Email is required")  
+}
+
+const user =await User.findOne({
+  $or: [{username},{email}]
+})
+
+if (!user){
+  throw new ApiError (404, "User does not exist")
+}
+
+const isPasswordValid = await user.isPasswordCorrect(password)
+
+if (!isPasswordValid){
+  throw new ApiError (401, "Invalid user Credentials")
+}
 
 export {registerUser}
