@@ -77,5 +77,18 @@ if (!avatarLocalPath) {
 return res
   .status(201)
   .json(new ApiREsponse(200, createdUser, "User registered successfully"));
-}) 
+});
+
+const loginUser = asyncHandler(async (req,res) => { } )
+// Now writhing the to do's what we wnated to do while 
+// making the user login and doing the due deligence for facilatating the login to the user  
+// collect the use the info if the user is not. registered or collect the session token 
+// from  the user in the heade of the API request 
+//  ift the session token is expired the ask the user for the refresh token and make the session token store it and
+//  send the  new session token including the sucessful message and rever the user the services and initia ted the other 
+// functions to the user and and  that's it thanks that's it. 
+
+
+
+
 export {registerUser}
