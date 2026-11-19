@@ -15,7 +15,7 @@ const uploadOnCloudinary = async (localFilePath) => {
       resource_type:'auto'
     })
 
-    // file has been uploaded successfully 
+    // file has been uploaded successfully   // after making sure that the controllers are woring properly then we will  make sure to unlike the file from  the server it self 
     console.log("file is uploaded on the cloudinary ",respose.url); 
      return respose;
 
