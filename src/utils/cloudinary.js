@@ -16,7 +16,8 @@ const uploadOnCloudinary = async (localFilePath) => {
     })
 
     // file has been uploaded successfully   // after making sure that the controllers are woring properly then we will  make sure to unlike the file from  the server it self 
-    console.log("file is uploaded on the cloudinary ",respose.url); 
+    // console.log("file is uploaded on the cloudinary ",respose.url);
+    fs.unlinkSync(localFilePath)   // we have  added the above files for the testing purpose only for the sake of the Development of the project 
      return respose;
 
   } catch (error) {
