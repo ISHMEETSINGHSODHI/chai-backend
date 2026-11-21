@@ -10,8 +10,12 @@ const  generateAccessandRefreshTokens = async(userId) => {
     const user = await User.findById(userId)
     const refreshToken = generateRefreshTokens()
     const accessToken = generateAccessTokens() // there are the mehods that we are makin an call to thanks 
-  
-  
+   
+
+    user.refreshToken = refreshToken
+     await  user.save ( { validateBeforeSave : false  }) 
+     
+     return {accessToken,refreshToken}
   } catch (error) {
     throw new ApiError (500, "Something went wrong while generating the refresh and refresh token ")
     
@@ -90,7 +94,7 @@ return res
   .json(new ApiREsponse(200, createdUser, "User registered successfully"));
 });
 
-const loginUser = asyncHandler(async (req,res) => { } )
+const loginUser = asyncHandler(async (req,res) => { 
 // Now writhing the to do's what we wnated to do while 
 // making the user login and doing the due deligence for facilatating the login to the user  
 // collect the use the info if the user is not. registered or collect the session token 
@@ -124,6 +128,37 @@ const isPasswordValid = await user.isPasswordCorrect(password)
 
 if (!isPasswordValid){
   throw new ApiError (401, "Invalid user Credentials")
-}
 
-export {registerUser}
+ 
+}
+ const {accessToken,refreshToken}=await generateAccessandRefreshTokens (user._id);
+
+const loggedInUser =  await User.findById(user._id).select("-password-refreshToken")
+
+const options = {
+ httpOnly: true,
+ secure:true
+}
+return res.status(200)
+.cookie("accessTokens",accessToken,options)
+.cookie("refreshTokens",refreshToken,options)
+.json (
+    new ApiREsponse(
+     200,
+     { 
+
+      user :loggedInUser,refreshToken,accessToken
+     },
+      "User Logged in Sucessfully "
+    )
+  )
+
+} )
+const logotUser = asyncHandler(async(req,res)=> {
+  
+})
+
+
+export {registerUser,
+  loginUser
+}
