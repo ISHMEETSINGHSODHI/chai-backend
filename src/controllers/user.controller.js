@@ -154,11 +154,13 @@ return res.status(200)
   )
 
 } )
-const logotUser = asyncHandler(async(req,res)=> {
+const logoutUser = asyncHandler(async(req,res)=> {
   
 })
 
 
-export {registerUser,
-  loginUser
+export {
+  registerUser,
+  loginUser,
+  logoutUser
 }
