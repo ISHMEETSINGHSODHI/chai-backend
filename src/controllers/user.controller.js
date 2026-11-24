@@ -5,7 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiREsponse } from "../utils/ApiREsponse.js";
 
 const generateAccessandRefreshTokens = async (userId) => {
-  console.log("ENV CHECK:", !!process.env.ACCESS_TOKEN_SECRET, !!process.env.REFRESH_TOKEN_SECRET, process.env.ACCESS_TOKEN_EXPIRY, process.env.REFRESH_TOKEN_EXPIRY);
+//   console.log("ENV CHECK:", !!process.env.ACCESS_TOKEN_SECRET, !!process.env.REFRESH_TOKEN_SECRET, process.env.ACCESS_TOKEN_EXPIRY, process.env.REFRESH_TOKEN_EXPIRY);
   try {
     const user = await User.findById(userId);
     const accessToken = user.generateAccessToken();
