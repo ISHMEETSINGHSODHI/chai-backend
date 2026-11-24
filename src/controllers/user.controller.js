@@ -2,7 +2,7 @@ import { ApiError } from "../utils/ApiError.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
 import {User} from "../models/users.model.js";
 import {uploadOnCloudinary } from "../utils/cloudinary.js";
-import {ApiREsponse} from "../utils/ApiREsponse.js"; 
+import {ApiREsponse} from "../utils/ApiREsponse.js";
 
 
 const  generateAccessandRefreshTokens = async(userId) => {
@@ -17,7 +17,7 @@ const  generateAccessandRefreshTokens = async(userId) => {
      
      return {accessToken,refreshToken}
   } catch (error) {
-    throw new ApiError (500, "Something went wrong while generating the refresh and refresh token ")
+    throw new ApiError (500, "Something went wrong while generating the access and refresh token ")
     
   }
 } 
@@ -131,7 +131,7 @@ if (!isPasswordValid){
 
  
 }
- const {accessToken,refreshToken}=await generateAccessandRefreshTokens (user._id);
+ const {accessToken,refreshToken}= await generateAccessandRefreshTokens (user._id);
 
 const loggedInUser =  await User.findById(user._id).select("-password-refreshToken")
 
