@@ -17,7 +17,7 @@ const  generateAccessandRefreshTokens = async(userId) => {
      
      return {accessToken,refreshToken}
   } catch (error) {
-    throw new ApiError (500, "Something went wrong while generating the access and refresh token ")
+    throw new ApiError (500, "Something went wrong while generating the refresh and access token ")
     
   }
 } 
@@ -158,7 +158,7 @@ const logoutUser = asyncHandler(async(req,res)=> {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
+      $unset: {
         refreshToken : undefined
       }
     },  
