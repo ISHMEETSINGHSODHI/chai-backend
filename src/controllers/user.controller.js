@@ -5,22 +5,21 @@ import {uploadOnCloudinary } from "../utils/cloudinary.js";
 import {ApiREsponse} from "../utils/ApiREsponse.js";
 
 
-const  generateAccessandRefreshTokens = async(userId) => {
+const generateAccessandRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId)
-    const refreshToken = generateRefreshTokens()
-    const accessToken = generateAccessTokens() // there are the mehods that we are makin an call to thanks 
-   
+    const accessToken = user.generateAccessToken()
+    const refreshToken = user.generateRefreshToken()
 
     user.refreshToken = refreshToken
-     await  user.save ( { validateBeforeSave : false  }) 
-     
-     return {accessToken,refreshToken}
+    await user.save({ validateBeforeSave: false })
+
+    return { accessToken, refreshToken }
   } catch (error) {
-    throw new ApiError (500, "Something went wrong while generating the refresh and access token ")
-    
+    console.log("TOKEN ERROR:", error)   // add this line
+    throw new ApiError(500, "Something went wrong while generating the refresh and access token")
   }
-} 
+}
 // const registerUser = asyncHandler( async (req , res ) => {
 //     res.status(200).json({
 //         message:"OK"
