@@ -131,7 +131,7 @@ if (!isPasswordValid){
 
  
 }
- const {accessToken,refreshToken}= await generateAccessandRefreshTokens (user._id);
+ const {accessToken,refreshToken}= await generateAccessandRefreshTokens(user._id)
 
 const loggedInUser =  await User.findById(user._id).select("-password-refreshToken")
 
