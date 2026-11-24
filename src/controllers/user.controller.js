@@ -8,8 +8,8 @@ import {ApiREsponse} from "../utils/ApiREsponse.js";
 const generateAccessandRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId)
-    const accessToken = user.generateAccessToken()
-    const refreshToken = user.generateRefreshToken()
+    const accessToken = user.generateAccessTokens()
+    const refreshToken = user.generateRefreshTokens()
 
     user.refreshToken = refreshToken
     await user.save({ validateBeforeSave: false })
@@ -82,7 +82,7 @@ if (!avatarLocalPath) {
  })
    
  const createdUser = await User.findById(user._id).select(
-  "-passowrd -refreshTokens"
+  "-passowrd -refreshToken"
  )
  if (!createdUser) {
   throw new ApiError(500,"Some tthing went wrong wile registring the user ")
