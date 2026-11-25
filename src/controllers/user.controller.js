@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/users.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiREsponse } from "../utils/ApiREsponse.js";
+import { verify } from "jsonwebtoken";
 
 const generateAccessandRefreshTokens = async (userId) => {
 //   console.log("ENV CHECK:", !!process.env.ACCESS_TOKEN_SECRET, !!process.env.REFRESH_TOKEN_SECRET, process.env.ACCESS_TOKEN_EXPIRY, process.env.REFRESH_TOKEN_EXPIRY);
@@ -126,6 +127,16 @@ if (incomingRefrehToken) {
   throw new ApiError(401,"unauthorized request ")
 }
 
+
+const decodedToken = jwt.verify(
+  incomingRefrehToken,
+  process.env.REFRESH_TOKEN_SECRET
+)
+const user = await User.findById(decodedToken?._id)
+
+
+if (!user) {
+  throw new ApiError(401,"unauthorized request ")
 })
 
 export { registerUser, loginUser, logoutUser };
