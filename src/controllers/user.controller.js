@@ -120,4 +120,12 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiREsponse(200, {}, "User logged out"));
 });
 
+const refreshAcessToken = asyncHandler(async(res,req)=> {
+  const incomingRefrehToken = req.cookie.refreshToken || req.body.refreshToken
+if (incomingRefrehToken) {
+  throw new ApiError(401,"unauthorized request ")
+}
+
+})
+
 export { registerUser, loginUser, logoutUser };
