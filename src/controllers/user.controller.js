@@ -128,15 +128,45 @@ if (incomingRefrehToken) {
 }
 
 
-const decodedToken = jwt.verify(
-  incomingRefrehToken,
-  process.env.REFRESH_TOKEN_SECRET
-)
-const user = await User.findById(decodedToken?._id)
+try {
+  const decodedToken = jwt.verify(
+    incomingRefrehToken,
+    process.env.REFRESH_TOKEN_SECRET
+  )
+  const user = await User.findById(decodedToken?._id)
+  
+  
+  if (!user) {
+    throw new ApiError(401,"Invalid Refresh Token ")
+  } 
+  
+  if (incomingRefrehToken    !== user?.refreshAcessToken ) {
+    throw new ApiError (401,"Refresh Token is Expired or Used ")
+  }
+  
+  const options ={
+    httpOnly: true,
+    secure: true 
+  }
+  
+    const {accessToken,newRefreshToken}=await generateAccessandRefreshTokens(user._id)
+  
+  return res 
+     .status(200)
+     .cookie(accessToken,accessToken,options )
+     .cookie(refreshToken,newRefreshToken,options )
+     .json (
+      new ApiREsponse(
+        200,
+        {accessToken,refreshToken:newRefreshToken},
+        "Access Token Refreshed "
+      )
+     )
+  
+} catch (error) {
+  throw new ApiError(401,error?.message || " Invalid Refresh Token ")
+}
 
-
-if (!user) {
-  throw new ApiError(401,"unauthorized request ")
 })
 
 export { registerUser, loginUser, logoutUser };
