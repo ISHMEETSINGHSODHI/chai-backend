@@ -176,7 +176,7 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
   if (!(newPassword === confirmPassword)){
     throw new ApiError (400,"The Confirm Password and the New Password is not Same  ")
   }
-  const user = await User.findById(req.user?.id)
+  const user = await User.findById(req.user?._id)
   const isPasswordCorrect  =await user.isPasswordCorrect(oldPassword)
 
   if (!isPasswordCorrect) {
@@ -196,8 +196,27 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
           return res 
           .status(200)
           .json (200, req.user ,"Current User feched Sucessfully ")
-        })
+    })
+   const changeUserAccountInfo = asyncHandler(async(req,req) =>{
+    const {fullName ,email ,} = req.body 
+    if (!fullName || !email ) {
+      throw new ApiError(400 , "You haven't entered the email or username Al the feids are required ")
+      
+    }
+    const user = User.findByIdAndUpdate
+    (
+      res.user?._id,
+    {
+      $set: {
+        fullName:fullName,
+        email: email,
+      }
+    },
+    {new :true  })
+   } ).select(-password) // just to delete the field you want to get things removed in the DB 
 
 
+  //   production tip for changing the images or tags make sure we have different controllers that is we dont want to send all the data again to the DB  
 
-export { registerUser, loginUser, logoutUser,refreshAcessToken,changeCurrentPassword};
+
+export { registerUser, loginUser, logoutUser,refreshAcessToken,changeCurrentPassword,getCurrentuser};
