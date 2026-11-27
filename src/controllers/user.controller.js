@@ -197,7 +197,8 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
           .status(200)
           .json (200, req.user ,"Current User feched Sucessfully ")
     })
-   const changeUserAccountInfo = asyncHandler(async(req,req) =>{
+    
+    const changeUserAccountInfo = asyncHandler(async(req,req) =>{
     const {fullName ,email ,} = req.body 
     if (!fullName || !email ) {
       throw new ApiError(400 , "You haven't entered the email or username Al the feids are required ")
@@ -212,11 +213,23 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
         email: email,
       }
     },
-    {new :true  })
-   } ).select(-password) // just to delete the field you want to get things removed in the DB 
-
+    {new :true  }
+    ).select(-password) // just to delete the field you want to get things removed in the DB 
+  return res
+  .status(200)
+  .json (
+    new ApiREsponse (200,User,"account detail updated sucessfully ")
+  )
+ })
 
   //   production tip for changing the images or tags make sure we have different controllers that is we dont want to send all the data again to the DB  
 
 
-export { registerUser, loginUser, logoutUser,refreshAcessToken,changeCurrentPassword,getCurrentuser};
+export { 
+  registerUser, 
+  loginUser,
+  logoutUser,
+  refreshAcessToken,
+  changeCurrentPassword,
+  getCurrentuser,
+  changeUserAccountInfo};
