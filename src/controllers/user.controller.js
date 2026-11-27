@@ -166,7 +166,33 @@ try {
 } catch (error) {
   throw new ApiError(401,error?.message || " Invalid Refresh Token ")
 }
-
 })
 
-export { registerUser, loginUser, logoutUser,refreshAcessToken };
+const changeCurrentPassword = asyncHandler(async(req,res)=> {
+
+
+  const {oldPassword,newPassword,confirmPassword } = req.body
+  
+  if (!(newPassword === confirmPassword)){
+    throw new ApiError (400,"The Confirm Password and the New Password is not Same  ")
+  }
+  const user = await User.findById(req.user?.id)
+  const isPasswordCorrect  =await user.isPasswordCorrect(oldPassword)
+
+  if (!isPasswordCorrect) {
+    throw new ApiError (400,{},"The Old Password is incorrect or Invalid Old Password ")
+    
+  }
+   user.password =newPassword
+    await user.save({validateBeforeSave:false})
+    return res.status(200)
+    .json(
+      new ApiREsponse (200,{},"Password Changed Sucessfully ")
+    )
+
+
+  })
+
+
+
+export { registerUser, loginUser, logoutUser,refreshAcessToken,changeCurrentPassword};
