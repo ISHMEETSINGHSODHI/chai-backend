@@ -192,6 +192,11 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
 
 
   })
+    const getCurrentuser = asyncHandler(async (req,res)=> {
+          return res 
+          .status(200)
+          .json (200, req.user ,"Current User feched Sucessfully ")
+        })
 
 
 
