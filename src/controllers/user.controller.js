@@ -244,7 +244,13 @@ const updatedAvatarCoverImage  = asyncHandler(async (req,res)=> {
   },
   { new:true }
  ).select(-password)
-})
+ return res
+.status(200)
+.json(
+  new ApiREsponse(200, user, "Avatar Image is updated Sucessfully " )
+)
+}) 
+
 
 const updateUserCoverImage = asyncHandler(async(req,res)=> {
 
@@ -269,6 +275,11 @@ const updateUserCoverImage = asyncHandler(async(req,res)=> {
     },{new :true}
   ).select(-password)
 })
+return res
+.status(200)
+.json(
+  new ApiREsponse (200,user ,"cover image updated sucessfully ")
+) 
 
 export { 
   registerUser, 
