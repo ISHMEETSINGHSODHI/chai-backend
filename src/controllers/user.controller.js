@@ -223,7 +223,28 @@ const changeCurrentPassword = asyncHandler(async(req,res)=> {
  })
 
   //   production tip for changing the images or tags make sure we have different controllers that is we dont want to send all the data again to the DB  
-
+const updatedAvatarCoverImage  = asyncHandler(async (req,res)=> {
+ const avatarLocalPath = req.file?.path 
+ if (!updatedAvatarCoverImage) {
+  throw new ApiError(400, "Avatar file is missing ")
+ }
+ const avatar = await uploadOnCloudinary 
+ (avatarLocalPath)
+ 
+ if (!avatar.url) {
+  throw new ApiError (400,"Error while upladong the avatar ")
+ }
+ await User.findByIdAndUpdate(
+  req.user?._id,
+  {
+    $set: {
+      avatar: avatar.url
+    },
+    
+  },
+  { new:true }
+ ).select(-password)
+})
 
 export { 
   registerUser, 
@@ -232,4 +253,5 @@ export {
   refreshAcessToken,
   changeCurrentPassword,
   getCurrentuser,
-  changeUserAccountInfo};
+  changeUserAccountInfo,
+  updatedAvatarCoverImage};
