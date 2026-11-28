@@ -234,7 +234,7 @@ const updatedAvatarCoverImage  = asyncHandler(async (req,res)=> {
  if (!avatar.url) {
   throw new ApiError (400,"Error while upladong the avatar ")
  }
- await User.findByIdAndUpdate(
+ const user = await User.findByIdAndUpdate(
   req.user?._id,
   {
     $set: {
@@ -246,6 +246,30 @@ const updatedAvatarCoverImage  = asyncHandler(async (req,res)=> {
  ).select(-password)
 })
 
+const updateUserCoverImage = asyncHandler(async(req,res)=> {
+
+  const coverLocalImagePath  =req.file?.path 
+
+  if (!coverLocalImagePath) {
+    throw new ApiError (400,"Cover Image is not attached /Empty field ")
+  } 
+  const coverImage = uploadOnCloudinary
+  (coverLocalImagePath)
+
+  if (!coverImage.url) {
+    throw new ApiError(400,"Error While uplading the cover Image ")    
+  }
+  const user = await findByIdAndUpdate (
+    req.user?._id,
+    { 
+      $set : {
+        coverImage : coverImage.url
+      }
+
+    },{new :true}
+  ).select(-password)
+})
+
 export { 
   registerUser, 
   loginUser,
@@ -254,4 +278,5 @@ export {
   changeCurrentPassword,
   getCurrentuser,
   changeUserAccountInfo,
-  updatedAvatarCoverImage};
+  updatedAvatarCoverImage,
+  updateUserCoverImage};
